@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STUDENTS 100
+
+typedef struct {
+    int student_id;
+    char name[50];
+    int age;
+    float grades[10];
+    int grade_count;
+} Student;
+
+Student students[MAX_STUDENTS];
+int student_count = 0;
+
+void add_student(int id, char name[], int age) {
+    if (student_count >= MAX_STUDENTS) {
+        printf("Maximum student limit reached.\n");
+        return;
+    }
+    students[student_count].student_id = id;
+    strcpy(students[student_count].name, name);
+    students[student_count].age = age;
+    students[student_count].grade_count = 0;
+    student_count++;
+    printf("Student added successfully.\n");
+}
+
+void edit_student(int id, char name[], int age) {
+    for (int i = 0; i < student_count; i++) {
+        if (students[i].student_id == id) {
+            strcpy(students[i].name, name);
+            students[i].age = age;
+            printf("Student details updated.\n");
+            return;
+        }
+    }
+    printf("Student not found.\n");
+}
+
+void delete_student(int id) {
+    for (int i = 0; i < student_count; i++) {
+        if (students[i].student_id == id) {
+            for (int j = i; j < student_count - 1; j++) {
+                students[j] = students[j + 1];
+            }
+            student_count--;
+            printf("Student deleted.\n");
+            return;
+        }
+    }
+    printf("Student not found.\n");
+}
+
+void add_grade(int id, float grade) {
+    for (int i = 0; i < student_count; i++) {
+        if (students[i].student_id == id) {
+            if (students[i].grade_count < 10) {
+                students[i].grades[students[i].grade_count] = grade;
+                students[i].grade_count++;
+                printf("Grade added.\n");
+            } else {
+                printf("Maximum grades reached.\n");
+            }
+            return;
+        }
+    }
+    printf("Student not found.\n");
+}
+
+void calculate_gpa(int id) {
+    for (int i = 0; i < student_count; i++) {
+        if (students[i].student_id == id) {
+            if (students[i].grade_count == 0) {
+                printf("No grades available.\n");
+                return;
+            }
+            float sum = 0;
+            for (int j = 0; j < students[i].grade_count; j++) {
+                sum += students[i].grades[j];
+            }
+            printf("GPA: %.2f\n", sum / students[i].grade_count);
+            return;
+        }
+    }
+    printf("Student not found.\n");
+}
+
+int main() {
+    add_student(1, "John Doe", 20);
+    add_student(2, "Jane Doe", 22);
+
+    add_grade(1, 85);
+    add_grade(1, 90);
+    calculate_gpa(1);
+
+    edit_student(1, "John Smith", 21);
+    delete_student(2);
+
+    return 0;
+}

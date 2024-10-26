@@ -1,0 +1,44 @@
+task 2 
+#include <stdio.h>
+
+void convert_temperature(double value, char scale) {
+    double celsius, fahrenheit, kelvin;
+
+    switch (scale) {
+        case 'C':
+        case 'c':
+            fahrenheit = value * 9 / 5 + 32;
+            kelvin = value + 273.15;
+            printf("%.2f °C is %.2f °F and %.2f K.\n", value, fahrenheit, kelvin);
+            break;
+        case 'F':
+        case 'f':
+            celsius = (value - 32) * 5 / 9;
+            kelvin = (value - 32) * 5 / 9 + 273.15;
+            printf("%.2f °F is %.2f °C and %.2f K.\n", value, celsius, kelvin);
+            break;
+        case 'K':
+        case 'k':
+            celsius = value - 273.15;
+            fahrenheit = (value - 273.15) * 9 / 5 + 32;
+            printf("%.2f K is %.2f °C and %.2f °F.\n", value, celsius, fahrenheit);
+            break;
+        default:
+            printf("Invalid scale. Please enter C, F, or K.\n");
+            break;
+    }
+}
+
+int main() {
+    double temperature;
+    char scale;
+
+    printf("Enter the temperature: ");
+    scanf("%lf", &temperature);
+    printf("Enter the scale (C for Celsius, F for Fahrenheit, K for Kelvin): ");
+    scanf(" %c", &scale);
+
+    convert_temperature(temperature, scale);
+
+    return 0;
+}
